@@ -11,10 +11,12 @@ import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.UpdateResult;
 import io.vertx.ext.web.RoutingContext;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class Specifications {
 
   private final SQLClient jdbc;
@@ -107,8 +109,8 @@ public class Specifications {
   }
 
   private void insert(Specification specification, SQLConnection connection, Handler<AsyncResult<Specification>> next) {
-    String sql = "INSERT INTO specifications (name) VALUES ?";
-    connection.updateWithParams(sql,
+    String sql = "INSERT INTO specifications (id, name) VALUES (DEFAULT, ?) RETURNING id";
+    connection.queryWithParams(sql,
       new JsonArray().add(specification.getName()),
       (ar) -> {
         if (ar.failed()) {
@@ -116,9 +118,8 @@ public class Specifications {
           connection.close();
           return;
         }
-        UpdateResult result = ar.result();
         Specification resultSpecification = new Specification(
-          result.getKeys().getLong(0),
+          ar.result().getResults().get(0).getLong(0),
           specification.getName()
         );
         next.handle(Future.succeededFuture(resultSpecification));

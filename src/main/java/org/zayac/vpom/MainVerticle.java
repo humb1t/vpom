@@ -53,7 +53,7 @@ public class MainVerticle extends AbstractVerticle {
     router.route("/specifications*").handler(BodyHandler.create());
     router.post("/specifications").handler(specifications::create);
     router.get("/specifications/:id").handler(specifications::get);
-    router.put("/specifications/:id").handler(specifications::update);
+    router.patch("/specifications/:id").handler(specifications::update);
 
     vertx
       .createHttpServer()
