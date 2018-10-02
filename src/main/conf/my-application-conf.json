@@ -1,0 +1,7 @@
+{
+  "url": "jdbc:postgresql://localhost:5432/pom",
+  "_driverclass": "org.postgresql.Driver",
+  "database": "pom",
+  "username": "postgres",
+  "password": "postgres"
+}

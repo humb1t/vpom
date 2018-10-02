@@ -1,19 +1,21 @@
 package org.zayac.vpom.specification;
 
-import com.github.jasync.sql.db.RowData;
+import io.vertx.core.json.JsonObject;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Specification {
-    private Long id;
-    private String name;
+  private Long id;
+  private String name;
 
-    public Specification() {
-    }
 
-    public Specification(RowData rowData) {
-        this.id = Long.valueOf((Integer) rowData.get("id"));
-        this.name = (String) rowData.get("name");
-    }
+  public Specification(JsonObject jsonObject) {
+    this.id = jsonObject.getLong("id");
+    this.name = jsonObject.getString("name");
+  }
 
 }
